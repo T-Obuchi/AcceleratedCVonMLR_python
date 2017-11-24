@@ -28,11 +28,8 @@ def standardize_matrix(A):
         print()
         raise
 
-    standardized_matrix = A.copy()
-
-    for index in range(standardized_matrix.shape[1]):
-        average = np.average(A[:, index])
-        std = np.std(A[:, index], ddof=1)
-        standardized_matrix[:, index] = (A[:, index] - average) / std
+    average = np.average(A, axis=0)
+    std = np.std(A, axis=0, ddof=1)
+    standardized_matrix = (A - average) / std
 
     return standardized_matrix
