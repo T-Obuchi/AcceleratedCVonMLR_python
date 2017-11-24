@@ -7,11 +7,14 @@ from .saacv_mlr import saacv_mlr
 from .prob_logit import prob_logit
 from .prob_multinomial import prob_multinomial
 
+from . import utils
+
 __all__ = [
     'acv_logit',
     'acv_mlr',
     'saacv_logit',
     'saacv_mlr',
     'prob_logit',
-    'prob_multinomial'
+    'prob_multinomial',
+    'utils'
 ]
