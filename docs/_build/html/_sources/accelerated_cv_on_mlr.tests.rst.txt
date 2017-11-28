@@ -1,0 +1,70 @@
+accelerated\_cv\_on\_mlr\.tests package
+=======================================
+
+Submodules
+----------
+
+accelerated\_cv\_on\_mlr\.tests\.test\_acv\_logit module
+--------------------------------------------------------
+
+.. automodule:: accelerated_cv_on_mlr.tests.test_acv_logit
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+accelerated\_cv\_on\_mlr\.tests\.test\_acv\_mlr module
+------------------------------------------------------
+
+.. automodule:: accelerated_cv_on_mlr.tests.test_acv_mlr
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+accelerated\_cv\_on\_mlr\.tests\.test\_prob\_logit module
+---------------------------------------------------------
+
+.. automodule:: accelerated_cv_on_mlr.tests.test_prob_logit
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+accelerated\_cv\_on\_mlr\.tests\.test\_prob\_multinomial module
+---------------------------------------------------------------
+
+.. automodule:: accelerated_cv_on_mlr.tests.test_prob_multinomial
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+accelerated\_cv\_on\_mlr\.tests\.test\_saacv\_logit module
+----------------------------------------------------------
+
+.. automodule:: accelerated_cv_on_mlr.tests.test_saacv_logit
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+accelerated\_cv\_on\_mlr\.tests\.test\_saacv\_mlr module
+--------------------------------------------------------
+
+.. automodule:: accelerated_cv_on_mlr.tests.test_saacv_mlr
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+accelerated\_cv\_on\_mlr\.tests\.test\_standardize\_matrix module
+-----------------------------------------------------------------
+
+.. automodule:: accelerated_cv_on_mlr.tests.test_standardize_matrix
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: accelerated_cv_on_mlr.tests
+    :members:
+    :undoc-members:
+    :show-inheritance:
