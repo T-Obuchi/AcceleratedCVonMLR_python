@@ -65,15 +65,6 @@ import accelerated_cv_on_mlr as acv
         - *ERR*: Approximate standard error of the leave-one-out estimator
 
 
-Inputs:
-- *wV*: the estimated weight vector of *N* dimensional
-- *X*: the set of feature vectors  of *M* * *N* dimensional
-- *Ycode*: the *M* * *2* dimensional binary matrix representing the class to which the corresponding feature vector belongs
-
-Outputs are the same as the multinomial case. The  further simplified approximation for the logit model is implemented in *saacv_logit*.
-
-
-
 * For more details, see docstrings.
 ```python
 acv.acv_mlr?
@@ -83,6 +74,7 @@ acv.acv_logit?
 * or see the api-documentation:
     - (PATH_TO_AcceleratedCVonMLR_python)/docs/_build/_html/index.html 
 <img alt="api-documentation-screenshot" src="pics_for_README/api-documentation-screenshot.png" >
+
 # DEMONSTRATION
 In the "sample" folder, demonstration Jupyter notebooks for the multinomial and binomial logistic regressions, sample_logit.ipynb and sample_mlr.ipynb, respectively, are available.
 
