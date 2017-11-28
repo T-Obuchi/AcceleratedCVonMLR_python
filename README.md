@@ -77,6 +77,8 @@ acv.acv_logit?
 
 # DEMONSTRATION
 In the "sample" folder, demonstration Jupyter notebooks for the multinomial and binomial logistic regressions, sample_logit.ipynb and sample_mlr.ipynb, respectively, are available.
+* [multinomial sample notebook](https://github.com/T-Obuchi/AcceleratedCVonMLR_python/blob/18e2f7a8bc77be667b6a925935a3eb1b5a350fc9/sample/sample_mlr.ipynb)
+* [binomial sample notebook](https://github.com/T-Obuchi/AcceleratedCVonMLR_python/blob/18e2f7a8bc77be667b6a925935a3eb1b5a350fc9/sample/sample_logit.ipynb) 
 
 # REFERENCE
 Tomoyuki Obuchi and Yoshiyuki Kabashima: "Accelerating Cross-Validation in Multinomial Logistic Regression with $ell_1$-Regularization", arXiv: 1711.05420
