@@ -14,7 +14,7 @@ def acv_logit(w, X, Ycode):
     Args:
         w: weight vector ((1,N)-shape np.float64 array)
         X: input feature matrix ((M, N)-shape np.float64 array)
-        Ycode: ((M, 2)-shape np.int64 array)
+        Ycode: binary matrix representing the class to which the corresponding feature vector belongs((M, 2)-shape np.int64 array)
 
     Returns:
         LOOE, ERR (float, float)
