@@ -22,7 +22,7 @@ def saacv_logit(w, X, Ycode):
         LOOE, ERR (float, float)
 
     References:
-        [1]: T. Obuchi and Y. Kabashima, XXXXXXXXXXXX
+        [1]: T. Obuchi and Y. Kabashima, arXiv:1711.05420
 
     Note:
         In this method, expected shape is different from the MATLAB implementation.
