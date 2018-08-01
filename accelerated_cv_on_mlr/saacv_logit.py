@@ -106,7 +106,6 @@ def saacv_logit(w, X, Ycode, lambda2=0.0):
         raise
 
     # parameter
-    M, N = X.shape
     X_square = X * X
     mean_X_square = np.mean(X_square)
 
@@ -117,8 +116,8 @@ def saacv_logit(w, X, Ycode, lambda2=0.0):
     F_all = p_all.prod(axis=1)
 
     # active set
-    threshold = 1e-8
-    A = np.abs(w) > threshold
+    active_threshold = 1e-6
+    A = np.abs(w) > active_threshold
     sum_A = np.sum(A)
 
     # SA approximation of LOO factor C
@@ -126,10 +125,12 @@ def saacv_logit(w, X, Ycode, lambda2=0.0):
     gamma = 0.5
     ERR = 100
     chi = 1.0 / mean_X_square
-    while 1e-8 < ERR:
+    # main loop for computing C
+    while 1e-6 < ERR:
         chi_pre = chi
         C_SA = sum_A * mean_X_square * chi
         R = np.sum(F_all / (1.0 + F_all * C_SA))
+        R += lambda2
         chi = gamma * chi_pre + (1.0 - gamma) / R / mean_X_square
         ERR = np.abs(chi - chi_pre)
 
