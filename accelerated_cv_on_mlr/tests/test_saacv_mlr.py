@@ -57,7 +57,7 @@ class TestSAACVMlr(unittest.TestCase):
             wV.append(data)
         wV = np.array(wV, dtype=np.float64)
 
-        desired = [2.521881706004383, 0.280752588329089]
+        desired = [0.653164534012144, 0.090637265872180]
         actual = saacv_mlr(wV=wV, X=X, Ycode=Ycode, lambda2=0.05)
 
         assert_allclose(actual, desired, rtol=1e-3)
