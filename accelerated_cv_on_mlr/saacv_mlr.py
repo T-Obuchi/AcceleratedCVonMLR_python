@@ -154,28 +154,7 @@ def saacv_mlr(wV, X, Ycode, Np=None, lambda2=0.0):
         R += lambda2 * np.eye(R.shape[0])
 
         # Update chi
-        if lambda2 > lambda2_threshold:
-            for index in range(N):
-                sub_vector = R[activated_positions[index]]
-                if len(sub_vector):
-                    length = int(math.sqrt(len(sub_vector)))
-                    Rinv_zmr = np.linalg.inv(sub_vector.reshape(length, length))
-                    chi[index][activated_positions[index]] = \
-                        gamma * chi_pre[index][activated_positions[index]] + \
-                        (1.0 - gamma) / mean_X_square * Rinv_zmr.reshape(length * length, )
-        else:
-            for index in range(N):
-                sub_vector = R[activated_positions[index]]
-                if len(sub_vector):
-                    length = int(math.sqrt(len(sub_vector)))
-                    [D, V] = np.linalg.eigh(sub_vector.reshape(length, length))
-                    A_rel = D > 1e-6
-
-                    Rinv_zmr = np.einsum('ij,j,mj->im', V[:, A_rel], 1.0 / D[A_rel], V[:, A_rel])
-
-                    chi[index][activated_positions[index]] = \
-                        gamma * chi_pre[index][activated_positions[index]] + \
-                        (1.0 - gamma) / mean_X_square * Rinv_zmr.reshape(length * length, )
+        update_chi(N, R, activated_positions, chi, chi_pre, gamma, lambda2, lambda2_threshold, mean_X_square)
 
         ERR = np.sum(np.linalg.norm(chi_pre - chi, ord='fro', axis=(1, 2))) / N
 
@@ -197,3 +176,28 @@ def saacv_mlr(wV, X, Ycode, Np=None, lambda2=0.0):
     ERR = np.std(np.log(np.sum(Ycode * p_all_loo, axis=1))) / np.sqrt(M - 1)
 
     return LOOE, ERR
+
+
+def update_chi(N, R, activated_positions, chi, chi_pre, gamma, lambda2, lambda2_threshold, mean_X_square):
+    if lambda2 > lambda2_threshold:
+        for index in range(N):
+            sub_vector = R[activated_positions[index]]
+            if len(sub_vector):
+                length = int(math.sqrt(len(sub_vector)))
+                Rinv_zmr = np.linalg.inv(sub_vector.reshape(length, length))
+                chi[index][activated_positions[index]] = \
+                    gamma * chi_pre[index][activated_positions[index]] + \
+                    (1.0 - gamma) / mean_X_square * Rinv_zmr.reshape(length * length, )
+    else:
+        for index in range(N):
+            sub_vector = R[activated_positions[index]]
+            if len(sub_vector):
+                length = int(math.sqrt(len(sub_vector)))
+                [D, V] = np.linalg.eigh(sub_vector.reshape(length, length))
+                A_rel = D > 1e-6
+
+                Rinv_zmr = np.einsum('ij,j,mj->im', V[:, A_rel], 1.0 / D[A_rel], V[:, A_rel])
+
+                chi[index][activated_positions[index]] = \
+                    gamma * chi_pre[index][activated_positions[index]] + \
+                    (1.0 - gamma) / mean_X_square * Rinv_zmr.reshape(length * length, )
