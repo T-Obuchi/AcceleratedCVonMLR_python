@@ -9,6 +9,9 @@ from accelerated_cv_on_mlr.saacv_logit import saacv_logit
 
 class TestSaacvLogit(unittest.TestCase):
     def test_calculation(self):
+        """ compare calculation result with that of MATLAB version
+            lambda2=0.0
+        """
 
         # read test data
         X = []
