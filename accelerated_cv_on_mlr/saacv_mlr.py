@@ -132,37 +132,54 @@ def saacv_mlr(wV, X, Ycode, Np=None, lambda2=0.0):
 
     # SA Approximation of LOO factor C
     # Initialization
-    gamma = 0.5
+    lambda2_threshold = 1e-6
     ERR = 100
     stack_I = np.einsum('k,ab->kab', np.ones(M), np.eye(Np))
     C_SA = np.zeros((Np, Np))
     chi = np.zeros((N, Np, Np))
+
     for i in range(N):
         chi[i][activated_positions[i]] = 1.0 / mean_X_square
 
+    gamma0 = 0.1
+    counter = 0
     while ERR > 1e-6:
+        gamma = min(0.9, gamma0 + counter * 0.01)
         chi_pre = chi.copy()
 
         # Compute R
         C_SA = mean_X_square * np.sum(chi, axis=0)
 
         R = np.sum(np.linalg.solve(stack_I + F.dot(C_SA), F), axis=0)
+        R += lambda2 * np.eye(R.shape[0])
 
         # Update chi
-        for index in range(N):
-            sub_vector = R[activated_positions[index]]
-            if len(sub_vector):
-                length = int(math.sqrt(len(sub_vector)))
-                [D, V] = np.linalg.eigh(sub_vector.reshape(length, length))
-                A_rel = D > 1e-8
+        if lambda2 > lambda2_threshold:
+            for index in range(N):
+                sub_vector = R[activated_positions[index]]
+                if len(sub_vector):
+                    length = int(math.sqrt(len(sub_vector)))
+                    Rinv_zmr = np.linalg.inv(sub_vector.reshape(length, length))
+                    chi[index][activated_positions[index]] = \
+                        gamma * chi_pre[index][activated_positions[index]] + \
+                        (1.0 - gamma) / mean_X_square * Rinv_zmr.reshape(length * length, )
+        else:
+            for index in range(N):
+                sub_vector = R[activated_positions[index]]
+                if len(sub_vector):
+                    length = int(math.sqrt(len(sub_vector)))
+                    [D, V] = np.linalg.eigh(sub_vector.reshape(length, length))
+                    A_rel = D > 1e-6
 
-                Rinv_zmr = np.einsum('ij,j,mj->im', V[:, A_rel], 1.0 / D[A_rel], V[:, A_rel])
+                    Rinv_zmr = np.einsum('ij,j,mj->im', V[:, A_rel], 1.0 / D[A_rel], V[:, A_rel])
 
-                chi[index][activated_positions[index]] = \
-                    gamma * chi_pre[index][activated_positions[index]] + \
-                    (1.0 - gamma) / mean_X_square * Rinv_zmr.reshape(length * length, )
+                    chi[index][activated_positions[index]] = \
+                        gamma * chi_pre[index][activated_positions[index]] + \
+                        (1.0 - gamma) / mean_X_square * Rinv_zmr.reshape(length * length, )
 
         ERR = np.sum(np.linalg.norm(chi_pre - chi, ord='fro', axis=(1, 2))) / N
+
+        counter += 1
 
     # gradient
     b_all = np.zeros((Np, M))
