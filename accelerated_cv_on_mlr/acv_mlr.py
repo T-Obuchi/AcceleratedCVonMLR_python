@@ -1,6 +1,5 @@
 # coding=utf-8
 import numpy as np
-import time
 
 from accelerated_cv_on_mlr.prob_multinomial import prob_multinomial
 
