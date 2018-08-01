@@ -5,7 +5,7 @@ from accelerated_cv_on_mlr.prob_logit import prob_logit
 
 def acv_logit(w, X, Ycode, lambda2=0.0):
     """An approximate leave-one-out estimator of predictive likelihood
-     for accelerated_cv_on_mlr regression with elastic net  regularization[1]
+     for accelerated_cv_on_mlr regression with elastic net regularization[1]
 
     Compute and return an approximate leave-one-out estimator (LOOE) and
     its standard error of predivtive likelihood for accelerated_cv_on_mlr regression
