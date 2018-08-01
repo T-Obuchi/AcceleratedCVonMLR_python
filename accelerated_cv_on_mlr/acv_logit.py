@@ -96,11 +96,12 @@ def acv_logit(w, X, Ycode, lambda2=0.0):
     F_all = p_all.prod(axis=1)
 
     # active set
-    threshold = 1e-8
+    threshold = 1e-6
     A = np.abs(w) > threshold
 
     # Hessian
     G = X[:, A].transpose().dot(np.diag(F_all)).dot(X[:, A])
+    G += lambda2 * np.eye(G.shape[0])  # add l2 norm term
 
     # LOO factor
     C = np.einsum('ij,ji->i', X[:, A], np.linalg.solve(G, X[:, A].transpose()))
