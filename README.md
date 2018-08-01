@@ -1,5 +1,5 @@
 # AcceleratedCVonMLR_Python
-AcceleratedCVonMLR_Python is a Python module for approximate cross-validation for multinomial logistic regression with *L1*-penalty.
+AcceleratedCVonMLR_Python is a Python module for approximate cross-validation for multinomial logistic regression with elastic net penalty.
 
 This is a free software, you can redistribute it and/or modify it under the terms of the GNU General Public License, version 3 or above. See LICENSE.txt for details.
 
@@ -36,7 +36,7 @@ Using estimated weight vectors *wV* given the feature data *X* and the class *Yc
 For multinomial logistic regression with *Np* (*>2*) classes,
 ```python
 import accelerated_cv_on_mlr as acv
-[LOOE,ERR] = acv.acv_mlr(wV, X, Ycode, Np)
+[LOOE,ERR] = acv.acv_mlr(wV, X, Ycode, Np, lambda2)
 ```
 * Arguments and Returns
     * Arguments:
@@ -44,7 +44,8 @@ import accelerated_cv_on_mlr as acv
         - *X*: input feature matrix (M, N)-shape np.float64 array
         - *Ycode*: class representative binary matrix (M, p)-shape np.int64 array
         - *Np*: number of classes
-
+        - *lambda2* : coefficient of the l2 regularization term 
+        
     * Returns:
         - *LOOE*: Approximate value of the leave-one-out estimator
         - *ERR*: Approximate standard error of the leave-one-out estimator
@@ -53,13 +54,14 @@ import accelerated_cv_on_mlr as acv
 For binomial logistic regression (logit model),
 ```python
 import accelerated_cv_on_mlr as acv
-[LOOE,ERR] = acv.acv_logit(w, X, Ycode)
+[LOOE,ERR] = acv.acv_logit(w, X, Ycode, lambda2)
 ```
 * Arguments and Returns
     * Arguments:
         - *w*: weight vector ((1,N)-shape np.float64 array)
         - *X*: input feature matrix ((M, N)-shape np.float64 array)
         - *Ycode*: binary matrix representing the class to which the corresponding feature vector belongs ((M, 2)-shape np.int64 array)
+        - *lambda2* : coefficient of the l2 regularization term 
     * Returns:
         - *LOOE*: Approximate value of the leave-one-out estimator
         - *ERR*: Approximate standard error of the leave-one-out estimator
