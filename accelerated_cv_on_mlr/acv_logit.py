@@ -3,7 +3,7 @@ import numpy as np
 from accelerated_cv_on_mlr.prob_logit import prob_logit
 
 
-def acv_logit(w, X, Ycode):
+def acv_logit(w, X, Ycode, lambda2=0.0):
     """An approximate leave-one-out estimator of predictive likelihood
      for accelerated_cv_on_mlr regression with l1 regularization[1]
 
@@ -15,6 +15,7 @@ def acv_logit(w, X, Ycode):
         w: weight vector ((1,N)-shape np.float64 array)
         X: input feature matrix ((M, N)-shape np.float64 array)
         Ycode: binary matrix representing the class to which the corresponding feature vector belongs((M, 2)-shape np.int64 array)
+        lambda2: coefficient of the l2 regularization term
 
     Returns:
         LOOE, ERR (float, float)
