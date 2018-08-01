@@ -5,7 +5,7 @@ import time
 from accelerated_cv_on_mlr.prob_multinomial import prob_multinomial
 
 
-def acv_mlr(wV, X, Ycode, Np=None):
+def acv_mlr(wV, X, Ycode, Np=None, lambda2=0.0):
     """ An approximate leave-one-out estimator of predictive likelihood
     for multinomial accelerated_cv_on_mlr regression with l1 regularization[1]
 
@@ -19,6 +19,7 @@ def acv_mlr(wV, X, Ycode, Np=None):
         X: input feature matrix (M, N)-shape np.float64 array
         Ycode: class representative matrix (M, p)-shape np.int64 array
         Np: number of classes
+        lambda2: coefficient of the l2 regularization term
 
     Returns:
         LOOE, ERR (float, float)
