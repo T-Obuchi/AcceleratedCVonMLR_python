@@ -8,6 +8,9 @@ from accelerated_cv_on_mlr.acv_mlr import acv_mlr
 
 class TestAcvMlr(unittest.TestCase):
     def test_calculation(self):
+        """ compare calculation result with that of MATLAB version
+            lambda2=0.0
+        """
         # read test data
         X = []
         X_reader = csv.reader(open("./sample_data_mlr/dummy_x.csv", "r"))
