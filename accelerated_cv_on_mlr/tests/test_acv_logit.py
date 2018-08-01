@@ -9,7 +9,7 @@ from accelerated_cv_on_mlr.acv_logit import acv_logit
 
 class TestAcvLogit(unittest.TestCase):
     def test_calculation_case1(self):
-        """ compare calculation result with that of matlab version
+        """ compare calculation result with that of MATLAB version
             lambda2=0.0
         """
 
