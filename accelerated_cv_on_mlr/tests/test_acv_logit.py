@@ -35,13 +35,13 @@ class TestAcvLogit(unittest.TestCase):
 
         # test case 1
         expected = np.array([0.226749338949696, 0.022556893001450])
-        actual = acv_logit(wV, X, Ycode)
+        actual = acv_logit(w=wV, X=X, Ycode=Ycode)
 
         assert_allclose(actual, expected, rtol=1e-3)
 
         # test case 2
         expected = np.array([0.161392496979912, 0.016002019295416])
-        actuak = acv_logit(wV, X, Ycode, lambda2=1.0)
+        actuak = acv_logit(w=wV, X=X, Ycode=Ycode, lambda2=1.0)
         assert_allclose(actual, expected, rtol=1e-3)
 
     def test_type_checker(self):
