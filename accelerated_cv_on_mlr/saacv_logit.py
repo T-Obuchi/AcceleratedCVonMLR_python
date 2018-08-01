@@ -12,33 +12,6 @@ def saacv_logit(w, X, Ycode, lambda2=0.0):
     a leave-one-out estimator (LOOE) and its standard error
     of predictive likelihood for accelerated_cv_on_mlr regression penalized by l1 norm.
 
-
-    The following logistic regression penalized
-    by the elastic net regularization (l1 + l2 norm) is considered:
-
-                \hat{w}=argmin_{w}
-                        { -\sum_{\mu}llkh(w|(y_{\mu},x_{\mu}))
-                          + lambda*||w||_1 + (1/2)lambda2*||w||_2^2 },
-
-    where llkh=log\phi is the log likelihood of logit model:
-
-                \phi(w|(y,x))=(delta_{y,1}+delta_{y,2}e^{u})/(1+e^{u})
-
-    where
-
-                 u=x.w
-
-    The leave-one-out estimator (LOOE) of a predictive likelihood is
-    defined as the
-
-                LOOE=-\sum_{\mu}llkh(\hat{w}^{\backslash \mu}|(y_{\mu},x_{\mu}))/M,
-
-    where \hat{w}^{\backslash \mu} is the solution of the above
-    minimization problem without the mu-th llkh term.
-    This LOO solution \hat{w}^{\backslash \mu} is approximated
-    from the full solution \hat{w}, yielding an approximate LOOE.
-
-
     Args:
         w: weight vector ((1,N)-shape np.float64 array)
         X: input feature matrix ((M, N)-shape np.float64 array)

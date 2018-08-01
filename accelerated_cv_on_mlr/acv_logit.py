@@ -4,25 +4,12 @@ from accelerated_cv_on_mlr.prob_logit import prob_logit
 
 
 def acv_logit(w, X, Ycode, lambda2=0.0):
-    """An approximate leave-one-out estimator of predictive likelihood
-     for accelerated_cv_on_mlr regression with elastic net regularization[1]
+    """ An approximate leave-one-out estimator of predictive likelihood
+    for accelerated_cv_on_mlr regression with elastic net regularization[1]
 
     Compute and return an approximate leave-one-out estimator (LOOE) and
     its standard error of predivtive likelihood for accelerated_cv_on_mlr regression
     penalized by l1 norm.
-
-    The fllowing logistic regression penalized by the elastic net regularization (l1 + l2 norm)
-    is considered:
-                \hat{w}=argmin_{w}
-                        { -\sum_{\mu}llkh(w|(y_{\mu},x_{\mu}))
-                          + lambda*||w||_1 + (1/2)lambda2*||w||_2^2 },
-
-    where llkh=log\phi is the log likelihood of logit model:
-
-                \phi(w|(y,x))=(delta_{y,1}+delta_{y,2}e^{u})/(1+e^{u})
-
-    where
-                 u=x.w
 
     Args:
         w: weight vector ((1,N)-shape np.float64 array)

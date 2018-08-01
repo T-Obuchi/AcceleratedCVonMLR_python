@@ -13,33 +13,6 @@ def acv_mlr(wV, X, Ycode, Np=None, lambda2=0.0):
     of predivtive likelihood for multinomial accelerated_cv_on_mlr regression
     penalized by elastic net regularization.
 
-    The following multinomial logistic regression penalized
-    by the l1 + l2 norms (elastic net) is considered:
-
-                \hat{w}=argmin_{{w_a}_a^{Np}}
-                        { -\sum_{\mu}llkh({w_a}_a^{Np}|(y_{\mu},x_{\mu}))
-                                 + lambda*\sum_{a}^{Np}||w_a||_1
-                                 + (1/2)*lambda_2*\sum_{a}^{Np}||w_a||_2^2},
-
-    where llkh=log\phi is the log likelihood of multinomial logistic map
-    \phi:
-
-                \phi(w|(y,x))=e^{u_{y}}/\sum_a e^{u_{a}}
-
-    where
-
-                 u_{a}=x.w_{a}.
-
-    The leave-one-out estimator (LOOE) of a predictive likelihood is
-    defined as the
-
-                LOOE=-\sum_{\mu}llkh({\hat{w}^{\backslash \mu}_a}_a^{Np}|(y_{\mu},x_{\mu}))/M,
-
-    where \hat{w}^{\backslash \mu}_a is the solution of the above
-    minimization problem without the mu-th llkh term.
-    This LOO solution \hat{w}^{\backslash \mu}_a is approximated
-    from the full solution \hat{w}_a, yielding an approximate LOOE.
-
     Args:
         wV: weight vectors (p, N)-shape np.float64 array
         X: input feature matrix (M, N)-shape np.float64 array
