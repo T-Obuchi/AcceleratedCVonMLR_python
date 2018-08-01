@@ -144,13 +144,17 @@ def acv_mlr(wV, X, Ycode, Np=None, lambda2=0.0):
 
     F_expand = __calculate_F(A, A_cla, F_all, M)
     G = np.einsum('mk,ml,klm->kl', X_expand, X_expand, F_expand)
+    G += lambda2 * np.eye(G.shape[0])  # include l2 norm contribution
 
     # inverse hessian with zero mode removal
-    [D, V] = np.linalg.eigh(G)
-    threshold = 1e-8
-    A_rel = D > threshold
+    lambda2_threshold = 1e-6
+    if lambda2 > lambda2_threshold:
+        Ginv_zmr = np.linalg.inv(G)
+    else:
+        [D, V] = np.linalg.eigh(G)
+        A_rel = D > 1e-6
 
-    Ginv_zmr = V[:, A_rel].dot(np.linalg.inv(np.diag(D[A_rel]))).dot(V[:, A_rel].transpose())
+        Ginv_zmr = V[:, A_rel].dot(np.linalg.inv(np.diag(D[A_rel]))).dot(V[:, A_rel].transpose())
 
     # LOO factor
     C = __calculate_C(As_ipt, As_ord, Ginv_zmr, M, Np, X)
