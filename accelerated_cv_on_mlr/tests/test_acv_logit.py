@@ -33,9 +33,15 @@ class TestAcvLogit(unittest.TestCase):
             wV.append(data)
         wV = np.array(wV, dtype=np.float64)
 
+        # test case 1
         expected = np.array([0.226749338949696, 0.022556893001450])
         actual = acv_logit(wV, X, Ycode)
 
+        assert_allclose(actual, expected, rtol=1e-3)
+
+        # test case 2
+        expected = np.array([0.161392496979912, 0.016002019295416])
+        actuak = acv_logit(wV, X, Ycode, lambda2=1.0)
         assert_allclose(actual, expected, rtol=1e-3)
 
     def test_type_checker(self):
