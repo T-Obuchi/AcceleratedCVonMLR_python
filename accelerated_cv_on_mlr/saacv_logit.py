@@ -3,14 +3,40 @@ import numpy as np
 from accelerated_cv_on_mlr.prob_logit import prob_logit
 
 
-def saacv_logit(w, X, Ycode):
+def saacv_logit(w, X, Ycode, lambda2=0.0):
     """A further simplified approximation of
     a leave-one-out estimator of predictive likelihood
-    for accelerated_cv_on_mlr regression with l1 regularization[1]
+    for accelerated_cv_on_mlr regression with elastic net regularization[1]
 
     Compute and return an very simplified approximation of
     a leave-one-out estimator (LOOE) and its standard error
     of predictive likelihood for accelerated_cv_on_mlr regression penalized by l1 norm.
+
+
+    The following logistic regression penalized
+    by the elastic net regularization (l1 + l2 norm) is considered:
+
+                \hat{w}=argmin_{w}
+                        { -\sum_{\mu}llkh(w|(y_{\mu},x_{\mu}))
+                          + lambda*||w||_1 + (1/2)lambda2*||w||_2^2 },
+
+    where llkh=log\phi is the log likelihood of logit model:
+
+                \phi(w|(y,x))=(delta_{y,1}+delta_{y,2}e^{u})/(1+e^{u})
+
+    where
+
+                 u=x.w
+
+    The leave-one-out estimator (LOOE) of a predictive likelihood is
+    defined as the
+
+                LOOE=-\sum_{\mu}llkh(\hat{w}^{\backslash \mu}|(y_{\mu},x_{\mu}))/M,
+
+    where \hat{w}^{\backslash \mu} is the solution of the above
+    minimization problem without the mu-th llkh term.
+    This LOO solution \hat{w}^{\backslash \mu} is approximated
+    from the full solution \hat{w}, yielding an approximate LOOE.
 
 
     Args:
@@ -18,6 +44,7 @@ def saacv_logit(w, X, Ycode):
         X: input feature matrix ((M, N)-shape np.float64 array)
         Ycode: binary matrix representing the class to which the corresponding feature vector belongs
         ((M, 2)-shape np.int64 array)
+        lambda2: Coefficient of the l2 regularization term (float value)
 
     Returns:
         LOOE, ERR (float, float)
