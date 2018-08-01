@@ -60,7 +60,7 @@ class TestSaacvLogit(unittest.TestCase):
             wV.append(data)
         wV = np.array(wV, dtype=np.float64)
 
-        desired = [0.218416659657244, 0.022009203762060]  # MATLAB result
+        desired = [0.157966422277330, 0.015914666766693]  # MATLAB result
         actual = saacv_logit(w=wV, X=X, Ycode=Ycode, lambda2=1.0)
         assert_allclose(actual=actual, desired=desired, rtol=1e-3)
 
