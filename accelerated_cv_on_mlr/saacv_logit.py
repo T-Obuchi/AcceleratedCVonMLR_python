@@ -10,7 +10,7 @@ def saacv_logit(w, X, Ycode, lambda2=0.0):
 
     Compute and return an very simplified approximation of
     a leave-one-out estimator (LOOE) and its standard error
-    of predictive likelihood for accelerated_cv_on_mlr regression penalized by l1 norm.
+    of predictive likelihood for accelerated_cv_on_mlr regression penalized by elastic net loss.
 
     Args:
         w: weight vector ((1,N)-shape np.float64 array)
