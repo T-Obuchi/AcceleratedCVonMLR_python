@@ -15,7 +15,7 @@ def acv_logit(w, X, Ycode, lambda2=0.0):
         w: weight vector ((1,N)-shape np.float64 array)
         X: input feature matrix ((M, N)-shape np.float64 array)
         Ycode: binary matrix representing the class to which the corresponding feature vector belongs((M, 2)-shape np.int64 array)
-        lambda2: coefficient of the l2 regularization term
+        lambda2: coefficient of the l2 regularization term (float value)
 
     Returns:
         LOOE, ERR (float, float)

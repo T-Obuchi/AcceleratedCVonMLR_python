@@ -17,8 +17,8 @@ def acv_mlr(wV, X, Ycode, Np=None, lambda2=0.0):
         wV: weight vectors (p, N)-shape np.float64 array
         X: input feature matrix (M, N)-shape np.float64 array
         Ycode: class representative matrix (M, p)-shape np.int64 array
-        Np: number of classes
-        lambda2: coefficient of the l2 regularization term
+        Np: number of classes (int value)
+        lambda2: coefficient of the l2 regularization term (float value)
 
     Returns:
         LOOE, ERR (float, float)
