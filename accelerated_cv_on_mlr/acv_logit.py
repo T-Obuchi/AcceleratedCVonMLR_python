@@ -9,7 +9,7 @@ def acv_logit(w, X, Ycode, lambda2=0.0):
 
     Compute and return an approximate leave-one-out estimator (LOOE) and
     its standard error of predivtive likelihood for accelerated_cv_on_mlr regression
-    penalized by l1 norm.
+    penalized by elastic net regularization.
 
     Args:
         w: weight vector ((1,N)-shape np.float64 array)
