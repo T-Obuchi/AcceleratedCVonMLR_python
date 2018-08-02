@@ -7,6 +7,8 @@ Submodules
 accelerated\_cv\_on\_mlr.utils.debug\_util module
 -------------------------------------------------
 
+These are utility modules.
+
 .. automodule:: accelerated_cv_on_mlr.utils.debug_util
     :members:
     :undoc-members:

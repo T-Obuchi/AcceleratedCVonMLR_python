@@ -7,8 +7,8 @@ Welcome to accelerated_cv_on_mlr's documentation!
 =================================================
 
 .. toctree::
-   :maxdepth: 4
-   :caption: Contents:
+   :maxdepth: 1
+   :caption: Documents:
 
    accelerated_cv_on_mlr
 
@@ -18,4 +18,3 @@ Indices and tables
 
 * :ref:`genindex`
 * :ref:`modindex`
-* :ref:`search`

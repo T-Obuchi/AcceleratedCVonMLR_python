@@ -50,7 +50,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'accelerated_cv_on_mlr'
-copyright = '2017, Author'
+copyright = '2018, Tomoyuki Obuchi'
 author = 'Author'
 
 # The version info for the project you're documenting, acts as replacement for

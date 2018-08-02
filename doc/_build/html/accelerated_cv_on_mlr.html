@@ -79,7 +79,7 @@
               
             
             
-              <p class="caption"><span class="caption-text">Contents:</span></p>
+              <p class="caption"><span class="caption-text">Documents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">accelerated_cv_on_mlr package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#subpackages">Subpackages</a><ul>
@@ -93,7 +93,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#module-accelerated_cv_on_mlr.prob_multinomial">accelerated_cv_on_mlr.prob_multinomial module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-accelerated_cv_on_mlr.saacv_logit">accelerated_cv_on_mlr.saacv_logit module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-accelerated_cv_on_mlr.saacv_mlr">accelerated_cv_on_mlr.saacv_mlr module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#module-accelerated_cv_on_mlr.test_executer">accelerated_cv_on_mlr.test_executer module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#accelerated-cv-on-mlr-test-executer-module">accelerated_cv_on_mlr.test_executer module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-accelerated_cv_on_mlr">Module contents</a></li>
 </ul>
 </li>
@@ -169,7 +169,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="accelerated_cv_on_mlr.utils.html">accelerated_cv_on_mlr.utils package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="accelerated_cv_on_mlr.utils.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="accelerated_cv_on_mlr.utils.html#module-accelerated_cv_on_mlr.utils.debug_util">accelerated_cv_on_mlr.utils.debug_util module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="accelerated_cv_on_mlr.utils.html#accelerated-cv-on-mlr-utils-debug-util-module">accelerated_cv_on_mlr.utils.debug_util module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="accelerated_cv_on_mlr.utils.html#module-accelerated_cv_on_mlr.utils.standardize_matrix">accelerated_cv_on_mlr.utils.standardize_matrix module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="accelerated_cv_on_mlr.utils.html#module-accelerated_cv_on_mlr.utils">Module contents</a></li>
 </ul>
@@ -189,7 +189,7 @@
 for accelerated_cv_on_mlr regression with elastic net regularization[1]</p>
 <p>Compute and return an approximate leave-one-out estimator (LOOE) and
 its standard error of predivtive likelihood for accelerated_cv_on_mlr regression
-penalized by l1 norm.</p>
+penalized by elastic net regularization.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -198,7 +198,7 @@ penalized by l1 norm.</p>
 <li><strong>w</strong> – weight vector ((1,N)-shape np.float64 array)</li>
 <li><strong>X</strong> – input feature matrix ((M, N)-shape np.float64 array)</li>
 <li><strong>Ycode</strong> – binary matrix representing the class to which the corresponding feature vector belongs((M, 2)-shape np.int64 array)</li>
-<li><strong>lambda2</strong> – coefficient of the l2 regularization term</li>
+<li><strong>lambda2</strong> – coefficient of the l2 regularization term (float value)</li>
 </ul>
 </td>
 </tr>
@@ -236,8 +236,8 @@ penalized by elastic net regularization.</p>
 <li><strong>wV</strong> – weight vectors (p, N)-shape np.float64 array</li>
 <li><strong>X</strong> – input feature matrix (M, N)-shape np.float64 array</li>
 <li><strong>Ycode</strong> – class representative matrix (M, p)-shape np.int64 array</li>
-<li><strong>Np</strong> – number of classes</li>
-<li><strong>lambda2</strong> – coefficient of the l2 regularization term</li>
+<li><strong>Np</strong> – number of classes (int value)</li>
+<li><strong>lambda2</strong> – coefficient of the l2 regularization term (float value)</li>
 </ul>
 </td>
 </tr>
@@ -305,7 +305,7 @@ a leave-one-out estimator of predictive likelihood
 for accelerated_cv_on_mlr regression with elastic net regularization[1]</p>
 <p>Compute and return an very simplified approximation of
 a leave-one-out estimator (LOOE) and its standard error
-of predictive likelihood for accelerated_cv_on_mlr regression penalized by l1 norm.</p>
+of predictive likelihood for accelerated_cv_on_mlr regression penalized by elastic net loss.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -313,8 +313,7 @@ of predictive likelihood for accelerated_cv_on_mlr regression penalized by l1 no
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>w</strong> – weight vector ((1,N)-shape np.float64 array)</li>
 <li><strong>X</strong> – input feature matrix ((M, N)-shape np.float64 array)</li>
-<li><strong>Ycode</strong> – binary matrix representing the class to which the corresponding feature vector belongs</li>
-<li><strong>(</strong> (<em>M</em><em>, </em><em>2</em><em>)</em><em>-shape np.int64 array</em>) – </li>
+<li><strong>Ycode</strong> – binary matrix representing the class to which the corresponding feature vector belongs ((M, 2)-shape np.int64 array)</li>
 <li><strong>lambda2</strong> – Coefficient of the l2 regularization term (float value)</li>
 </ul>
 </td>
@@ -354,8 +353,8 @@ penalized by l1 norm.</p>
 <li><strong>wV</strong> – weight vectors (p, N)-shape np.float64 array</li>
 <li><strong>X</strong> – input feature matrix (M, N)-shape np.float64 array</li>
 <li><strong>Ycode</strong> – class representative matrix (M, p)-shape np.int64 array</li>
-<li><strong>Np</strong> – number of classes</li>
-<li><strong>lambda2</strong> – Coefficient of the l2 regularization term</li>
+<li><strong>Np</strong> – number of classes (int value)</li>
+<li><strong>lambda2</strong> – Coefficient of the l2 regularization term (float value)</li>
 </ul>
 </td>
 </tr>
@@ -380,13 +379,8 @@ penalized by l1 norm.</p>
 <dd></dd></dl>
 
 </div>
-<div class="section" id="module-accelerated_cv_on_mlr.test_executer">
-<span id="accelerated-cv-on-mlr-test-executer-module"></span><h2>accelerated_cv_on_mlr.test_executer module<a class="headerlink" href="#module-accelerated_cv_on_mlr.test_executer" title="Permalink to this headline">¶</a></h2>
-<dl class="function">
-<dt id="accelerated_cv_on_mlr.test_executer.main">
-<code class="descclassname">accelerated_cv_on_mlr.test_executer.</code><code class="descname">main</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#accelerated_cv_on_mlr.test_executer.main" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
+<div class="section" id="accelerated-cv-on-mlr-test-executer-module">
+<h2>accelerated_cv_on_mlr.test_executer module<a class="headerlink" href="#accelerated-cv-on-mlr-test-executer-module" title="Permalink to this headline">¶</a></h2>
 </div>
 <div class="section" id="module-accelerated_cv_on_mlr">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-accelerated_cv_on_mlr" title="Permalink to this headline">¶</a></h2>
@@ -397,7 +391,7 @@ penalized by l1 norm.</p>
 for accelerated_cv_on_mlr regression with elastic net regularization[1]</p>
 <p>Compute and return an approximate leave-one-out estimator (LOOE) and
 its standard error of predivtive likelihood for accelerated_cv_on_mlr regression
-penalized by l1 norm.</p>
+penalized by elastic net regularization.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -406,7 +400,7 @@ penalized by l1 norm.</p>
 <li><strong>w</strong> – weight vector ((1,N)-shape np.float64 array)</li>
 <li><strong>X</strong> – input feature matrix ((M, N)-shape np.float64 array)</li>
 <li><strong>Ycode</strong> – binary matrix representing the class to which the corresponding feature vector belongs((M, 2)-shape np.int64 array)</li>
-<li><strong>lambda2</strong> – coefficient of the l2 regularization term</li>
+<li><strong>lambda2</strong> – coefficient of the l2 regularization term (float value)</li>
 </ul>
 </td>
 </tr>
@@ -441,8 +435,8 @@ penalized by elastic net regularization.</p>
 <li><strong>wV</strong> – weight vectors (p, N)-shape np.float64 array</li>
 <li><strong>X</strong> – input feature matrix (M, N)-shape np.float64 array</li>
 <li><strong>Ycode</strong> – class representative matrix (M, p)-shape np.int64 array</li>
-<li><strong>Np</strong> – number of classes</li>
-<li><strong>lambda2</strong> – coefficient of the l2 regularization term</li>
+<li><strong>Np</strong> – number of classes (int value)</li>
+<li><strong>lambda2</strong> – coefficient of the l2 regularization term (float value)</li>
 </ul>
 </td>
 </tr>
@@ -469,7 +463,7 @@ a leave-one-out estimator of predictive likelihood
 for accelerated_cv_on_mlr regression with elastic net regularization[1]</p>
 <p>Compute and return an very simplified approximation of
 a leave-one-out estimator (LOOE) and its standard error
-of predictive likelihood for accelerated_cv_on_mlr regression penalized by l1 norm.</p>
+of predictive likelihood for accelerated_cv_on_mlr regression penalized by elastic net loss.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -477,8 +471,7 @@ of predictive likelihood for accelerated_cv_on_mlr regression penalized by l1 no
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>w</strong> – weight vector ((1,N)-shape np.float64 array)</li>
 <li><strong>X</strong> – input feature matrix ((M, N)-shape np.float64 array)</li>
-<li><strong>Ycode</strong> – binary matrix representing the class to which the corresponding feature vector belongs</li>
-<li><strong>(</strong> (<em>M</em><em>, </em><em>2</em><em>)</em><em>-shape np.int64 array</em>) – </li>
+<li><strong>Ycode</strong> – binary matrix representing the class to which the corresponding feature vector belongs ((M, 2)-shape np.int64 array)</li>
 <li><strong>lambda2</strong> – Coefficient of the l2 regularization term (float value)</li>
 </ul>
 </td>
@@ -515,8 +508,8 @@ penalized by l1 norm.</p>
 <li><strong>wV</strong> – weight vectors (p, N)-shape np.float64 array</li>
 <li><strong>X</strong> – input feature matrix (M, N)-shape np.float64 array</li>
 <li><strong>Ycode</strong> – class representative matrix (M, p)-shape np.int64 array</li>
-<li><strong>Np</strong> – number of classes</li>
-<li><strong>lambda2</strong> – Coefficient of the l2 regularization term</li>
+<li><strong>Np</strong> – number of classes (int value)</li>
+<li><strong>lambda2</strong> – Coefficient of the l2 regularization term (float value)</li>
 </ul>
 </td>
 </tr>
@@ -590,7 +583,7 @@ penalized by l1 norm.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, Author.
+        &copy; Copyright 2018, Tomoyuki Obuchi.
 
     </p>
   </div>

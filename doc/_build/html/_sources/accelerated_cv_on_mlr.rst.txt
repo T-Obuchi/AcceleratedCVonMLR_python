@@ -6,7 +6,6 @@ Subpackages
 
 .. toctree::
 
-    accelerated_cv_on_mlr.tests
     accelerated_cv_on_mlr.utils
 
 Submodules
