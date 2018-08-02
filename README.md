@@ -16,7 +16,7 @@ python setup.py install
 * currentry, pip installation is not supported yet.
 
 # DESCRIPTION
-Using estimated weight vectors *wV* given the feature data *X* and the class *Ycode* for multinomial logistic regression penalized by *L1* norm, this program computes and returns an approximate leave-one-out estimator (LOOE) and its standard error of predictive likelihood. All required modules are in the "accelerated_cv_on_mlr" package. Note that this program itself does not contain any solver to obtain *wV*. Please use other distributed programs for the purpose.
+Using estimated weight vectors *wV* given the feature data *X* and the class *Ycode* for multinomial logistic regression penalized by elastic net regularizer, this program computes and returns an approximate leave-one-out estimator (LOOE) and its standard error of predictive likelihood. All required modules are in the "accelerated_cv_on_mlr" package. Note that this program itself does not contain any solver to obtain *wV*. Please use other distributed programs for the purpose.
 
 # Requirement
 * NumPy
@@ -34,17 +34,19 @@ Using estimated weight vectors *wV* given the feature data *X* and the class *Yc
 # USAGE
 ## multinomial case
 For multinomial logistic regression with *Np* (*>2*) classes,
+
 ```python
 import accelerated_cv_on_mlr as acv
 [LOOE,ERR] = acv.acv_mlr(wV, X, Ycode, Np, lambda2)
 ```
+
 * Arguments and Returns
     * Arguments:
-        - *wV*: weight vectors (p, N)-shape np.float64 array
-        - *X*: input feature matrix (M, N)-shape np.float64 array
-        - *Ycode*: class representative binary matrix (M, p)-shape np.int64 array
-        - *Np*: number of classes
-        - *lambda2* : coefficient of the l2 regularization term 
+        - *wV*: weight vectors ((p, N)-shape np.float64 array)
+        - *X*: input feature matrix ((M, N)-shape np.float64 array)
+        - *Ycode*: class representative binary matrix ((M, p)-shape np.int64 array)
+        - *Np*: number of classes (int value)
+        - *lambda2* : coefficient of the l2 regularization term (float value) 
         
     * Returns:
         - *LOOE*: Approximate value of the leave-one-out estimator
@@ -52,22 +54,25 @@ import accelerated_cv_on_mlr as acv
 
 ## binomial case
 For binomial logistic regression (logit model),
+
 ```python
 import accelerated_cv_on_mlr as acv
 [LOOE,ERR] = acv.acv_logit(w, X, Ycode, lambda2)
 ```
+
 * Arguments and Returns
     * Arguments:
         - *w*: weight vector ((1,N)-shape np.float64 array)
         - *X*: input feature matrix ((M, N)-shape np.float64 array)
         - *Ycode*: binary matrix representing the class to which the corresponding feature vector belongs ((M, 2)-shape np.int64 array)
-        - *lambda2* : coefficient of the l2 regularization term 
+        - *lambda2* : coefficient of the l2 regularization term (float value)
     * Returns:
         - *LOOE*: Approximate value of the leave-one-out estimator
         - *ERR*: Approximate standard error of the leave-one-out estimator
 
 
 * For more details, see docstrings.
+
 ```python
 acv.acv_mlr?
 acv.acv_logit?
