@@ -117,14 +117,16 @@ def saacv_mlr(wV, X, Ycode, Np=None, lambda2=0.0):
 
     gamma0 = 0.1
     counter = 0
-    while ERR > 1e-6:
+    theta = 1e-6
+    while theta < ERR:
         gamma = min(0.9, gamma0 + counter * 0.01)
         chi_pre = chi.copy()
 
         # Compute R
         C_SA = mean_X_square * np.sum(chi, axis=0)
 
-        R = np.sum(np.linalg.solve(stack_I + F.dot(C_SA), F), axis=0)
+        R = mean_X_square * np.sum(np.linalg.solve(stack_I + F.dot(C_SA), F), axis=0)
+
         R += lambda2 * np.eye(R.shape[0])
 
         # Update chi
@@ -159,9 +161,12 @@ def update_chi(N, R, activated_positions, chi, chi_pre, gamma, lambda2, lambda2_
             if len(sub_vector):
                 length = int(math.sqrt(len(sub_vector)))
                 Rinv_zmr = np.linalg.inv(sub_vector.reshape(length, length))
+                # chi[index][activated_positions[index]] = \
+                #     gamma * chi_pre[index][activated_positions[index]] + \
+                #     (1.0 - gamma) / mean_X_square * Rinv_zmr.reshape(length * length, )
                 chi[index][activated_positions[index]] = \
                     gamma * chi_pre[index][activated_positions[index]] + \
-                    (1.0 - gamma) / mean_X_square * Rinv_zmr.reshape(length * length, )
+                    (1.0 - gamma) * Rinv_zmr.reshape(length * length, )
     else:
         for index in range(N):
             sub_vector = R[activated_positions[index]]
@@ -172,6 +177,9 @@ def update_chi(N, R, activated_positions, chi, chi_pre, gamma, lambda2, lambda2_
 
                 Rinv_zmr = np.einsum('ij,j,mj->im', V[:, A_rel], 1.0 / D[A_rel], V[:, A_rel])
 
+                # chi[index][activated_positions[index]] = \
+                #     gamma * chi_pre[index][activated_positions[index]] + \
+                #     (1.0 - gamma) / mean_X_square * Rinv_zmr.reshape(length * length, )
                 chi[index][activated_positions[index]] = \
                     gamma * chi_pre[index][activated_positions[index]] + \
-                    (1.0 - gamma) / mean_X_square * Rinv_zmr.reshape(length * length, )
+                    (1.0 - gamma) * Rinv_zmr.reshape(length * length, )

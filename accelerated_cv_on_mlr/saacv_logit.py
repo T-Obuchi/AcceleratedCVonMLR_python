@@ -97,13 +97,14 @@ def saacv_logit(w, X, Ycode, lambda2=0.0):
     gamma = 0.5
     ERR = 100
     chi = 1.0 / mean_X_square
+    theta = 1e-6
     # main loop for computing C
-    while 1e-6 < ERR:
+    while theta < ERR:
         chi_pre = chi
         C_SA = sum_A * mean_X_square * chi
-        R = np.sum(F_all / (1.0 + F_all * C_SA))
+        R = mean_X_square * np.sum(F_all / (1.0 + F_all * C_SA))
         R += lambda2
-        chi = gamma * chi_pre + (1.0 - gamma) / R / mean_X_square
+        chi = gamma * chi_pre + (1.0 - gamma) / R
         ERR = np.abs(chi - chi_pre)
 
     C_SA = sum_A * mean_X_square * chi
