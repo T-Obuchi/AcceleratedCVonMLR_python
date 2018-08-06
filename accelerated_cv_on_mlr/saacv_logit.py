@@ -3,21 +3,20 @@ import numpy as np
 from accelerated_cv_on_mlr.prob_logit import prob_logit
 
 
-def saacv_logit(w, X, Ycode):
+def saacv_logit(w, X, Ycode, lambda2=0.0):
     """A further simplified approximation of
     a leave-one-out estimator of predictive likelihood
-    for accelerated_cv_on_mlr regression with l1 regularization[1]
+    for accelerated_cv_on_mlr regression with elastic net regularization[1]
 
     Compute and return an very simplified approximation of
     a leave-one-out estimator (LOOE) and its standard error
-    of predictive likelihood for accelerated_cv_on_mlr regression penalized by l1 norm.
-
+    of predictive likelihood for accelerated_cv_on_mlr regression penalized by elastic net loss.
 
     Args:
         w: weight vector ((1,N)-shape np.float64 array)
         X: input feature matrix ((M, N)-shape np.float64 array)
-        Ycode: binary matrix representing the class to which the corresponding feature vector belongs
-        ((M, 2)-shape np.int64 array)
+        Ycode: binary matrix representing the class to which the corresponding feature vector belongs ((M, 2)-shape np.int64 array)
+        lambda2: Coefficient of the l2 regularization term (float value) Default value is zero.
 
     Returns:
         LOOE, ERR (float, float)
@@ -79,7 +78,6 @@ def saacv_logit(w, X, Ycode):
         raise
 
     # parameter
-    M, N = X.shape
     X_square = X * X
     mean_X_square = np.mean(X_square)
 
@@ -90,8 +88,8 @@ def saacv_logit(w, X, Ycode):
     F_all = p_all.prod(axis=1)
 
     # active set
-    threshold = 1e-8
-    A = np.abs(w) > threshold
+    active_threshold = 1e-6
+    A = np.abs(w) > active_threshold
     sum_A = np.sum(A)
 
     # SA approximation of LOO factor C
@@ -99,11 +97,14 @@ def saacv_logit(w, X, Ycode):
     gamma = 0.5
     ERR = 100
     chi = 1.0 / mean_X_square
-    while 1e-8 < ERR:
+    theta = 1e-6
+    # main loop for computing C
+    while theta < ERR:
         chi_pre = chi
         C_SA = sum_A * mean_X_square * chi
-        R = np.sum(F_all / (1.0 + F_all * C_SA))
-        chi = gamma * chi_pre + (1.0 - gamma) / R / mean_X_square
+        R = mean_X_square * np.sum(F_all / (1.0 + F_all * C_SA))
+        R += lambda2
+        chi = gamma * chi_pre + (1.0 - gamma) / R
         ERR = np.abs(chi - chi_pre)
 
     C_SA = sum_A * mean_X_square * chi

@@ -8,7 +8,10 @@ from accelerated_cv_on_mlr.saacv_logit import saacv_logit
 
 
 class TestSaacvLogit(unittest.TestCase):
-    def test_calculation(self):
+    def test_calculation_1(self):
+        """ compare calculation result with that of MATLAB version
+            lambda2=0.0
+        """
 
         # read test data
         X = []
@@ -29,8 +32,36 @@ class TestSaacvLogit(unittest.TestCase):
             wV.append(data)
         wV = np.array(wV, dtype=np.float64)
 
-        desired = [0.218416659657244, 0.022009203762060]  # MATLAB result
-        actual = saacv_logit(w=wV, X=X, Ycode=Ycode)
+        desired = [0.218422689654590, 0.021996032748895]  # MATLAB result
+        actual = saacv_logit(w=wV, X=X, Ycode=Ycode, lambda2=0.0)
+        assert_allclose(actual=actual, desired=desired, rtol=1e-3)
+
+    def test_calculation_2(self):
+        """ compare calculation result with that of MATLAB version
+            lambda2=1.0
+        """
+
+        # read test data
+        X = []
+        X_reader = csv.reader(open("./sample_data_logit/dummy_x.csv", "r"))
+        for data in X_reader:
+            X.append(data)
+        X = np.array(X, dtype=np.float64)
+
+        Ycode = []
+        Ycode_reader = csv.reader(open("./sample_data_logit/dummy_Ycode.csv", "r"))
+        for data in Ycode_reader:
+            Ycode.append(data)
+        Ycode = np.array(Ycode, dtype=np.int64)
+
+        wV = []
+        wV_reader = csv.reader(open("./sample_data_logit/dummy_wV.csv", "r"))
+        for data in wV_reader:
+            wV.append(data)
+        wV = np.array(wV, dtype=np.float64)
+
+        desired = [0.157966422277330, 0.015914666766693]  # MATLAB result
+        actual = saacv_logit(w=wV, X=X, Ycode=Ycode, lambda2=1.0)
         assert_allclose(actual=actual, desired=desired, rtol=1e-3)
 
     def test_type_checker(self):

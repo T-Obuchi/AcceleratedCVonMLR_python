@@ -8,7 +8,10 @@ from accelerated_cv_on_mlr.saacv_mlr import saacv_mlr
 
 
 class TestSAACVMlr(unittest.TestCase):
-    def test_calculation(self):
+    def test_calculation_1(self):
+        """ compare calculation result with that of MATLAB version
+            lambda2=0.0
+        """
         X = []
         X_reader = csv.reader(open("./sample_data_mlr/dummy_x.csv", "r"))
         for data in X_reader:
@@ -27,8 +30,34 @@ class TestSAACVMlr(unittest.TestCase):
             wV.append(data)
         wV = np.array(wV, dtype=np.float64)
 
-        desired = [2.521881706004383, 0.280752588329089]
-        actual = saacv_mlr(wV,X,Ycode)
+        desired = [2.521893318435908, 0.280607276358399]
+        actual = saacv_mlr(wV=wV, X=X, Ycode=Ycode, lambda2=0.0)
+
+        assert_allclose(actual, desired, rtol=1e-3)
+
+    def test_calculation_2(self):
+        """ compare calculation result with that of MATLAB version
+            lambda2=0.05
+        """
+        X = []
+        X_reader = csv.reader(open("./sample_data_mlr/dummy_x.csv", "r"))
+        for data in X_reader:
+            X.append(data)
+        X = np.array(X, dtype=np.float64)
+
+        Ycode = []
+        Ycode_reader = csv.reader(open("./sample_data_mlr/dummy_Ycode.csv", "r"))
+        for data in Ycode_reader:
+            Ycode.append(data)
+        Ycode = np.array(Ycode, dtype=np.int64)
+
+        wV = []
+        wV_reader = csv.reader(open("./sample_data_mlr/dummy_wV.csv", "r"))
+        for data in wV_reader:
+            wV.append(data)
+        wV = np.array(wV, dtype=np.float64)
+        desired = [0.599821808248546, 0.084504070031790]
+        actual = saacv_mlr(wV=wV, X=X, Ycode=Ycode, lambda2=0.05)
 
         assert_allclose(actual, desired, rtol=1e-3)
 

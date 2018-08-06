@@ -3,18 +3,19 @@ import numpy as np
 from accelerated_cv_on_mlr.prob_logit import prob_logit
 
 
-def acv_logit(w, X, Ycode):
-    """An approximate leave-one-out estimator of predictive likelihood
-     for accelerated_cv_on_mlr regression with l1 regularization[1]
+def acv_logit(w, X, Ycode, lambda2=0.0):
+    """ An approximate leave-one-out estimator of predictive likelihood
+    for accelerated_cv_on_mlr regression with elastic net regularization[1]
 
     Compute and return an approximate leave-one-out estimator (LOOE) and
     its standard error of predivtive likelihood for accelerated_cv_on_mlr regression
-    penalized by l1 norm.
+    penalized by elastic net regularization.
 
     Args:
         w: weight vector ((1,N)-shape np.float64 array)
         X: input feature matrix ((M, N)-shape np.float64 array)
         Ycode: binary matrix representing the class to which the corresponding feature vector belongs((M, 2)-shape np.int64 array)
+        lambda2: coefficient of the l2 regularization term (float value). Default value is zero.
 
     Returns:
         LOOE, ERR (float, float)
@@ -82,11 +83,12 @@ def acv_logit(w, X, Ycode):
     F_all = p_all.prod(axis=1)
 
     # active set
-    threshold = 1e-8
+    threshold = 1e-6
     A = np.abs(w) > threshold
 
     # Hessian
     G = X[:, A].transpose().dot(np.diag(F_all)).dot(X[:, A])
+    G += lambda2 * np.eye(G.shape[0])  # add l2 norm term
 
     # LOO factor
     C = np.einsum('ij,ji->i', X[:, A], np.linalg.solve(G, X[:, A].transpose()))

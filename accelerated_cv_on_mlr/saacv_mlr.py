@@ -5,22 +5,22 @@ import math
 from accelerated_cv_on_mlr.prob_multinomial import prob_multinomial
 
 
-def saacv_mlr(wV, X, Ycode, Np=None):
+def saacv_mlr(wV, X, Ycode, Np=None, lambda2=0.0):
     """ A further simplified approximation of
     a leave-one-out estimator of predictive likelihood
-    for multinomial accelerated_cv_on_mlr regression with l1 regularization[1]
+    for multinomial accelerated_cv_on_mlr regression with elastic net regularization[1]
 
     Compute and return an very simplified approximation of
     a leave-one-out estimator (LOOE) and its standard error
     of predictive likelihood for multinomial accelerated_cv_on_mlr regression
     penalized by l1 norm.
 
-
     Args:
         wV: weight vectors (p, N)-shape np.float64 array
         X: input feature matrix (M, N)-shape np.float64 array
         Ycode: class representative matrix (M, p)-shape np.int64 array
-        Np: number of classes
+        Np: number of classes (int value)
+        lambda2: Coefficient of the l2 regularization term (float value) Default value is zero.
 
     Returns:
         LOOE, ERR (float, float)
@@ -106,37 +106,35 @@ def saacv_mlr(wV, X, Ycode, Np=None):
 
     # SA Approximation of LOO factor C
     # Initialization
-    gamma = 0.5
+    lambda2_threshold = 1e-6
     ERR = 100
     stack_I = np.einsum('k,ab->kab', np.ones(M), np.eye(Np))
     C_SA = np.zeros((Np, Np))
     chi = np.zeros((N, Np, Np))
+
     for i in range(N):
         chi[i][activated_positions[i]] = 1.0 / mean_X_square
 
-    while ERR > 1e-6:
+    gamma0 = 0.1
+    counter = 0
+    theta = 1e-6
+    while theta < ERR:
+        gamma = min(0.9, gamma0 + counter * 0.01)
         chi_pre = chi.copy()
 
         # Compute R
         C_SA = mean_X_square * np.sum(chi, axis=0)
 
-        R = np.sum(np.linalg.solve(stack_I + F.dot(C_SA), F), axis=0)
+        R = mean_X_square * np.sum(np.linalg.solve(stack_I + F.dot(C_SA), F), axis=0)
+
+        R += lambda2 * np.eye(R.shape[0])
 
         # Update chi
-        for index in range(N):
-            sub_vector = R[activated_positions[index]]
-            if len(sub_vector):
-                length = int(math.sqrt(len(sub_vector)))
-                [D, V] = np.linalg.eigh(sub_vector.reshape(length, length))
-                A_rel = D > 1e-8
-
-                Rinv_zmr = np.einsum('ij,j,mj->im', V[:, A_rel], 1.0 / D[A_rel], V[:, A_rel])
-
-                chi[index][activated_positions[index]] = \
-                    gamma * chi_pre[index][activated_positions[index]] + \
-                    (1.0 - gamma) / mean_X_square * Rinv_zmr.reshape(length * length, )
+        update_chi(N, R, activated_positions, chi, chi_pre, gamma, lambda2, lambda2_threshold, mean_X_square)
 
         ERR = np.sum(np.linalg.norm(chi_pre - chi, ord='fro', axis=(1, 2))) / N
+
+        counter += 1
 
     # gradient
     b_all = np.zeros((Np, M))
@@ -154,3 +152,34 @@ def saacv_mlr(wV, X, Ycode, Np=None):
     ERR = np.std(np.log(np.sum(Ycode * p_all_loo, axis=1))) / np.sqrt(M - 1)
 
     return LOOE, ERR
+
+
+def update_chi(N, R, activated_positions, chi, chi_pre, gamma, lambda2, lambda2_threshold, mean_X_square):
+    if lambda2 > lambda2_threshold:
+        for index in range(N):
+            sub_vector = R[activated_positions[index]]
+            if len(sub_vector):
+                length = int(math.sqrt(len(sub_vector)))
+                Rinv_zmr = np.linalg.inv(sub_vector.reshape(length, length))
+                # chi[index][activated_positions[index]] = \
+                #     gamma * chi_pre[index][activated_positions[index]] + \
+                #     (1.0 - gamma) / mean_X_square * Rinv_zmr.reshape(length * length, )
+                chi[index][activated_positions[index]] = \
+                    gamma * chi_pre[index][activated_positions[index]] + \
+                    (1.0 - gamma) * Rinv_zmr.reshape(length * length, )
+    else:
+        for index in range(N):
+            sub_vector = R[activated_positions[index]]
+            if len(sub_vector):
+                length = int(math.sqrt(len(sub_vector)))
+                [D, V] = np.linalg.eigh(sub_vector.reshape(length, length))
+                A_rel = D > 1e-6
+
+                Rinv_zmr = np.einsum('ij,j,mj->im', V[:, A_rel], 1.0 / D[A_rel], V[:, A_rel])
+
+                # chi[index][activated_positions[index]] = \
+                #     gamma * chi_pre[index][activated_positions[index]] + \
+                #     (1.0 - gamma) / mean_X_square * Rinv_zmr.reshape(length * length, )
+                chi[index][activated_positions[index]] = \
+                    gamma * chi_pre[index][activated_positions[index]] + \
+                    (1.0 - gamma) * Rinv_zmr.reshape(length * length, )

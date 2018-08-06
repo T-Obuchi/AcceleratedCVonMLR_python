@@ -8,7 +8,10 @@ from accelerated_cv_on_mlr.acv_logit import acv_logit
 
 
 class TestAcvLogit(unittest.TestCase):
-    def test_calculation(self):
+    def test_calculation_case1(self):
+        """ compare calculation result with that of MATLAB version
+            lambda2=0.0
+        """
 
         # read test data
         X = []
@@ -30,8 +33,36 @@ class TestAcvLogit(unittest.TestCase):
         wV = np.array(wV, dtype=np.float64)
 
         expected = np.array([0.226749338949696, 0.022556893001450])
-        actual = acv_logit(wV, X, Ycode)
+        actual = acv_logit(w=wV, X=X, Ycode=Ycode)
 
+        assert_allclose(actual, expected, rtol=1e-3)
+
+    def test_calculation_case2(self):
+        """ compare calculation result with that of matlab version
+            lambda2=1.0
+        """
+
+        # read test data
+        X = []
+        X_reader = csv.reader(open("./sample_data_logit/dummy_x.csv", "r"))
+        for data in X_reader:
+            X.append(data)
+        X = np.array(X, dtype=np.float64)
+
+        Ycode = []
+        Ycode_reader = csv.reader(open("./sample_data_logit/dummy_Ycode.csv", "r"))
+        for data in Ycode_reader:
+            Ycode.append(data)
+        Ycode = np.array(Ycode, dtype=np.int64)
+
+        wV = []
+        wV_reader = csv.reader(open("./sample_data_logit/dummy_wV.csv", "r"))
+        for data in wV_reader:
+            wV.append(data)
+        wV = np.array(wV, dtype=np.float64)
+
+        expected = np.array([0.161392496979912, 0.016002019295416])
+        actual = acv_logit(w=wV, X=X, Ycode=Ycode, lambda2=1.0)
         assert_allclose(actual, expected, rtol=1e-3)
 
     def test_type_checker(self):

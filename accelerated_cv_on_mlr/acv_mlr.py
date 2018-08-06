@@ -1,24 +1,24 @@
 # coding=utf-8
 import numpy as np
-import time
 
 from accelerated_cv_on_mlr.prob_multinomial import prob_multinomial
 
 
-def acv_mlr(wV, X, Ycode, Np=None):
+def acv_mlr(wV, X, Ycode, Np=None, lambda2=0.0):
     """ An approximate leave-one-out estimator of predictive likelihood
-    for multinomial accelerated_cv_on_mlr regression with l1 regularization[1]
+    for multinomial accelerated_cv_on_mlr regression with elastic norm regularization[1]
 
     Compute and return an very simplified approximation of
     a leave-one-out estimator (LOOE) and its standard error
     of predivtive likelihood for multinomial accelerated_cv_on_mlr regression
-    penalized by l1 norm.
+    penalized by elastic net regularization.
 
     Args:
         wV: weight vectors (p, N)-shape np.float64 array
         X: input feature matrix (M, N)-shape np.float64 array
         Ycode: class representative matrix (M, p)-shape np.int64 array
-        Np: number of classes
+        Np: number of classes (int value)
+        lambda2: coefficient of the l2 regularization term (float value) Default value is zero.
 
     Returns:
         LOOE, ERR (float, float)
@@ -117,13 +117,17 @@ def acv_mlr(wV, X, Ycode, Np=None):
 
     F_expand = __calculate_F(A, A_cla, F_all, M)
     G = np.einsum('mk,ml,klm->kl', X_expand, X_expand, F_expand)
+    G += lambda2 * np.eye(G.shape[0])  # include l2 norm contribution
 
     # inverse hessian with zero mode removal
-    [D, V] = np.linalg.eigh(G)
-    threshold = 1e-8
-    A_rel = D > threshold
+    lambda2_threshold = 1e-6
+    if lambda2 > lambda2_threshold:
+        Ginv_zmr = np.linalg.inv(G)
+    else:
+        [D, V] = np.linalg.eigh(G)
+        A_rel = D > 1e-6
 
-    Ginv_zmr = V[:, A_rel].dot(np.linalg.inv(np.diag(D[A_rel]))).dot(V[:, A_rel].transpose())
+        Ginv_zmr = V[:, A_rel].dot(np.linalg.inv(np.diag(D[A_rel]))).dot(V[:, A_rel].transpose())
 
     # LOO factor
     C = __calculate_C(As_ipt, As_ord, Ginv_zmr, M, Np, X)
